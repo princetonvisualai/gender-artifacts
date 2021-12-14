@@ -1,2 +1,2 @@
-# cos-529
-COS 529: Understanding Gender Bias
+# Anyone Can Skateboard: Tracing Sources of Gender Biases in Classifiers
+COS 529 Final Project
