@@ -38,7 +38,7 @@ def mask_objs(imgId, catId, catNm):
     plt.imshow(I); #plt.axis('off')
     annIds = coco.getAnnIds(imgIds=int(imgId), iscrowd=False)
     anns = coco.loadAnns(annIds)
-    polygons = get_mask_polygons(anns, [catId])
+    polygons = get_mask_polygons(anns, [*catId])
 
     #code to make color average of scene
     colors = []
@@ -69,28 +69,32 @@ def mask_objs(imgId, catId, catNm):
 
 def create_pickle(object, data, split):
     output = {}
-    filepath = '/scratch/network/nmeister/COCO/{}/'.format(object)
+    # filepath = '/scratch/network/nmeister/COCO/{}/'.format(object)    
+    filepath = '/scratch/network/nmeister/COCO/val2014/'
+
     directory = os.listdir(filepath)
     for file in data: 
         img_name = file.split('/')[-1]
         assert img_name in directory 
         file_name = filepath + img_name
         output[file_name] = data[file]
-    pickle.dump(output, open('/scratch/network/nmeister/COCO/{}_{}.pkl'.format(object, split), 'wb'))
+    pickle.dump(output, open('data/{}_{}.pkl'.format(object, split), 'wb'))
 
 if __name__ == '__main__':
-    coco = COCO('/scratch/network/nmeister/COCO/instances_val2014.json') # add file 
-    splits = ['train', 'val', 'test']
-    objects = ['person']
-    for object in objects:
-        for split in splits: 
-            imgs = pickle.load(open('data/gender_labels_{}.pkl'.format(split), 'rb')) 
-            create_pickle(object, imgs, split)
+    imgs = pickle.load(open('/scratch/network/nmeister/COCO/data/gender_labels_{}.pkl'.format('test'), 'rb')) 
+    create_pickle('baseline', imgs, 'val')
+    # coco = COCO('/scratch/network/nmeister/COCO/instances_val2014.json') # add file 
+    # splits = ['train', 'val', 'test']
+    # objects = ['all']
+    # for object in objects:
+    #     for split in splits: 
+    #         imgs = pickle.load(open('data/gender_labels_{}.pkl'.format(split), 'rb')) 
+    #         create_pickle(object, imgs, split)
 
-    # cats = [(40, 'baseball-glove'), (41, 'skateboard'), (31, 'handbag')]
-    # cats = [(1, 'person')]
+    # # cats = [(40, 'baseball-glove'), (41, 'skateboard'), (31, 'handbag')]
+    # cats = [(np.arange(2, 82), 'all')]
     # for split in splits:
-    #     imgs = pickle.load(open('data/gender_labels_{}.pkl'.format(split), 'rb')) 
+    #     imgs = pickle.load(open('/scratch/network/nmeister/COCO/data/gender_labels_{}.pkl'.format(split), 'rb')) 
     #     for cat in cats: 
     #         catId, catNm = cat
     #         for img in tqdm(imgs): 
