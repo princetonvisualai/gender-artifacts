@@ -198,24 +198,28 @@ The annotations will be available for download upon request.
 
 <!-- Analysis -->
 <div class="container">
-<h2>Analysis</h2>
-Using the crowdsourced demographic annotations, we consider both the ground-truth images
-and manual captions as well as the automatically generated captions.
+<h2>Implications</h2>
+  
+<ul>
+  <li>Many prior works have proposed methods for mitigating gender biases by removing gender expression information from the image. 
+In contrast, we show that gender artifacts are intricately embedded in visual datasets, 
+such that attempting to remove them in computer vision bias mitigation techniques may be a futile endeavor.
+  his is evidenced by experiments where even after the person is <em>entirely occluded </em> with a rectangular mask, 
+  the gender artifact model is nevertheless able to reliably distinguish which of the two genders is present in the image:
+  AUC of 70.8% in COCO and 63.0% in OpenImages. 
+  We more realistically advise practitioners to adopt <em>fairness-aware</em> models and disaggregated evaluation metrics, 
+  where practitioners explicitly account for potential discrepancies between protected demographic groups. 
+  </li>
+  <li>Since there are so many salient artifacts in image datasets that are (spuriously) correlated with gender, 
+  our findings point to an incoherence of gender prediction. 
+  Any time a model predicts "gender", 
+  we should wonder what the prediction refers to, as it could just as easily be the gender of the person most likely to be in a redder 
+  image as opposed to a greener image, rather than a form of societally meaningful gender expression. </li>
+</ul>  
+  
 <br/>
 <br/>
 <br/>
-<center>
-  <img src="imgs/findings.png" style="width:75%">
-</center>
-
-Our analysis shows that not only does bias exist in the ground-truth data, beyond just
-the underepresentation of certain skin tone groups, but also that this bias is propagating
-into the generated captions. Furthermore, we find that newer and more advanced image
-captioning models tend to exhibit more bias.
-
-<br/>
-<br/>
-We provide an in-depth analysis of these bias propagation pathways in our paper.
 
 
 </div>
