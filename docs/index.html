@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
   <link href="mainpage.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -71,16 +72,23 @@
     <div class="col-xs-2 col-xs-offset-3 text-center">
       <div class="service-box mt-5 mx-auto">
         <h4 class="mb-3" style="font-size:18px">
-          <a href="https://arxiv.org/abs/2206.09191" target="_blank" class="button">Paper </a>
+          <a href="https://arxiv.org/abs/2206.09191" target="_blank"> 
+            <i class="fa fa-4x fa-file-text-o text-primary mb-3"></i>
+          </a>
         </h4>
+        Paper
       </div>
     </div>
 
-    <div class="col-xs-2 text-center">
+
+    <div class="col-xs-2 col-xs-offset-2 text-center">
       <div class="service-box mt-5 mx-auto">
         <h4 class="mb-3" style="font-size:18px">
-          <a href="https://github.com/dorazhao99/gender-artifacts" target="_blank" class="button">Code </a>
+          <a href="https://github.com/dorazhao99/gender-artifacts" target="_blank"> 
+            <i class="fa fa-4x fa-github text-primary mb-3"></i>
+          </a>
         </h4>
+        Code
       </div>
     </div>
 
@@ -168,31 +176,34 @@
 
 <!-- Method -->
 <div class="container">
-<h2>Demographic annotations on COCO</h2>
+<h2>Identifying Gender Artifacts</h2>
 
-We crowdsource skin color and gender annotations on the COCO 2014 validation set
-using Amazon Mechanical Turk (AMT). We use the Fitzpatrick Skin Type Scale, which ranges from
-1 (lightest) to 6 (darkest) to measure skin color, and the binary perceived gender expression.
-In total, we collect annotations for 15,762 images and 28,315 <tt>person</tt> instances.
+In our work, we explore to what extent gendered information can truly be removed from the dataset. 
+To do so, we develop a framework to identify gender artifacts, or visual cues that are correlated with gender. 
+While there can be infinitely many potential correlations in an image, we focus specifically on those that are learnable 
+(i.e., result in a learnable difference for a machine learning model) and interpretable 
+(i.e., have an interpretable human corollary such as color and shape). 
+To discover gender artifacts, we take the approach of leveraging a "gender artifact model," 
+which is a model trained on selectively manipulated versions of the dataset (e.g., grayscale, occluded background) 
+to predict perceived gender expression. 
+This method of discovering gender artifacts is more complex than prior work, 
+as it goes beyond analyzing annotated attributes in the image to unveil a broader set of gender artifacts. 
 
-<br />
-<br />
+<br><br>
+Our goal is to understand what the model is picking up on as a predictive feature, 
+and how variations of the dataset with particular gender artifacts removed or added may increase or decrease its performance. 
+<br><br>
 <center>
-  <img src="imgs/pie_charts_hoz.png" style="width:80%">
-<br />
-<br />
+  <img src="imgs/3_25 Bias in AI Presentation (2).jpg" style="width:60%">
 </center>
-<div class="caption">
-  (Left column): Distribution of perceived skin color and gender expression of the
-  28,315 <tt>people</tt> instances.
-  <br />
-  (Middle column): Distribution after collapsing individual annotations into image-level annotations
-  <br />
-  (Right column): Distribution of self-reported demographics for AMT workers.
-</div>
-<br />
-<br />
-The annotations will be available for download upon request.
+
+We analyze some of the higher-level perceptual components of the image by changing the resolution and color of the image (1).
+Then, we turn to disentangling gender artifacts arising from the person versus the background (2). 
+Finally, we investigate try to distinguish between two components of the background: the objects and the “scene” by studying the role of contextual objects as gender artifacts (3).
+
+<br><br>
+It is important to note that we do not condone the use of automated gender recognition in practice and discuss additional important ethical considerations in our paper's Introduction (Sec 1) and Set-up (Sec 3.3). 
+
 
 </div>
 
@@ -216,10 +227,6 @@ such that attempting to remove them in computer vision bias mitigation technique
   we should wonder what the prediction refers to, as it could just as easily be the gender of the person most likely to be in a redder 
   image as opposed to a greener image, rather than a form of societally meaningful gender expression. </li>
 </ul>  
-  
-<br/>
-<br/>
-<br/>
 
 
 </div>
