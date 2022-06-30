@@ -41,7 +41,7 @@
       <br>
       <span style="font-size:18px">Princeton University</span>
       <br>
-      <span style="font-size:18px">{dorothyz, angelina.wang, olgarus}@cs.princeton.edu<br><br></span>
+      <span style="font-size:18px">{nmeister, dorothyz}@alumni.princeton.edu<br><br></span>
     </div>
   </div>
 </div>
@@ -71,7 +71,7 @@
     <div class="col-xs-2 col-xs-offset-3 text-center">
       <div class="service-box mt-5 mx-auto">
         <h4 class="mb-3" style="font-size:18px">
-          <a href="https://arxiv.org/abs/2106.08503" target="_blank" class="button">Paper </a>
+          <a href="https://arxiv.org/abs/2206.09191" target="_blank" class="button">Paper </a>
         </h4>
       </div>
     </div>
@@ -79,19 +79,20 @@
     <div class="col-xs-2 text-center">
       <div class="service-box mt-5 mx-auto">
         <h4 class="mb-3" style="font-size:18px">
-          <a href="https://github.com/dorazhao99/imagecaptioning-bias" target="_blank" class="button">Code </a>
+          <a href="https://github.com/dorazhao99/gender-artifacts" target="_blank" class="button">Code </a>
         </h4>
       </div>
     </div>
 
 
-    <div class="col-xs-2 text-center">
+    <!-- <div class="col-xs-2 text-center">
       <div class="service-box mt-5 mx-auto">
         <h4 class="mb-3" style="font-size:18px">
           <a href="https://forms.gle/FBi3ZsMDficweyP96" target="_blank" class="button">Annotations </a>
         </h4>
       </div>
-    </div>
+    </div> 
+--> 
 
 
     <!--
@@ -122,30 +123,33 @@
 <!-- Abstract -->
 <div class="container">
   <h2>Abstract</h2>
-  Image captioning is an important task for benchmarking visual reasoning and for
-  enabling accessibility for people with vision impairments. However, as in many
-  machine learning settings, social biases can influence image captioning in undesirable ways.
-  In this work, we study bias propagation pathways within image captioning, focusing
-  specifically on the COCO dataset. Prior work has analyzed gender bias in captions;
-  here we focus specifically on racial biases. Our first contribution is in annotating the skin
-  color of 28,315 of the depicted people after obtaining IRB approval. Using these annotations,
-  we compare racial biases present in both manual and automatically-generated captions,
-  focusing specifically on differences between images depicting people with lighter versus darker skin.
-  We observe differences in caption accuracy, sentiment, and word choice. Most importantly,
-  we find that modern captioning systems exhibit stronger biases than older models ---
-  thus, social bias concerns are likely to become increasingly prevalent in image captioning.
+  Gender biases are known to exist within large-scale visual datasets and can be reflected or even amplified in downstream models. 
+  Many prior works have proposed methods for mitigating gender biases, often by attempting to remove gender expression information from images. 
+  To understand the feasibility and practicality of these approaches, we investigate what <em>gender artifacts </em> exist within large-scale visual datasets.
+  We define a <em>gender artifact </em> as a visual cue that is correlated with gender, focusing specifically on those cues that are learnable by a modern image classifier and have an interpretable human corollary. 
+  Through our analyses, we find that gender artifacts are ubiquitous in the COCO and OpenImages datasets, 
+  occurring everywhere from low-level information (e.g., the mean value of the color channels) to the higher-level composition of the image 
+  (e.g., pose and location of people). Given the prevalence of gender artifacts, 
+  we claim that attempts to remove gender artifacts from such datasets are largely infeasible. 
+  Instead, the responsibility lies with researchers and practitioners to be aware that the distribution of images within datasets is 
+  highly gendered and hence develop methods which are robust to these distributional shifts across groups.
+
 </div>
 
 <!-- Citation -->
 <div class="container">
   <h2>Citation</h2>
   <pre><code>
-    @inproceedings{zhao2021captionbias,
-       author = {Dora Zhao and Angelina Wang and Olga Russakovsky},
-       title = {Understanding and Evaluating Racial Biases in Image Captioning},
-       booktitle = {International Conference on Computer Vision (ICCV)},
-       year = {2021}
-    }
+    @misc{https://doi.org/10.48550/arxiv.2206.09191,
+    doi = {10.48550/ARXIV.2206.09191},
+    url = {https://arxiv.org/abs/2206.09191},
+    author = {Meister, Nicole and Zhao, Dora and Wang, Angelina and Ramaswamy, Vikram V. and Fong, Ruth and Russakovsky, Olga},
+    keywords = {Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+    title = {Gender Artifacts in Visual Datasets},
+    publisher = {arXiv},
+    year = {2022},
+    copyright = {Creative Commons Attribution 4.0 International}
+  }
   </code></pre>
 </div>
 
@@ -272,11 +276,10 @@ We provide an in-depth analysis of these bias propagation pathways in our paper.
 <div class="container">
   <h2>Acknowledgements</h2>
 
-  This work is supported by the National Science Foundation under Grant No. 1763642
-  and the Friedland Independent Work Fund from Princeton University's School of
-  Engineering and Applied Sciences. We thank Arvind Narayanan, Sunnie S. Y. Kim,
-  Vikram V. Ramaswamy, and Zeyu Wang for their helpful comments and suggestions,
-  as well as the Amazon Mechanical Turk workers for the annotations.
+  This material is based upon work supported by the National Science Foundation under Grant No. 1763642, Grant No. 2112562, 
+  and the Graduate Research Fellowship to A.W., as well as by the Princeton Engineering Project X Fund. 
+  Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) 
+  and do not necessarily reflect the views of the National Science Foundation.
   <br/><br/>
 
   The webpage template was adapted from this
@@ -286,7 +289,8 @@ We provide an in-depth analysis of these bias propagation pathways in our paper.
 
 <div class="container" >
   <h2>Contact</h2>
-  <div><a href="https://dorazhao99.github.io/" style="color:#1075bc" target="new">Dora Zhao</a> (dorothyz@cs.princeton.edu)</div>
+  <div><a href="https://nicolemeister.github.io/" style="color:#1075bc" target="new">Nicole Meister</a> (nmeister@alumni.princeton.edu)</div>
+  <div><a href="https://dorazhao99.github.io/" style="color:#1075bc" target="new">Dora Zhao</a> (dorothyz@alumni.princeton.edu)</div>
 </div>
 
 <div id="footer">
