@@ -9,23 +9,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as T
 
-
 class ResNet50(nn.Module):
-    def __init__(self, n_classes=1000, pretrained=True, hidden_size=2048, model_file='/n/fs/nmdz-gender/resnet50_places365.pth.tar'):
+    def __init__(self, n_classes=1000, pretrained=True, hidden_size=2048):
         super().__init__()
         self.resnet = torchvision.models.resnet50(pretrained=pretrained)
-        if not pretrained:  
-            self.resnet = torch.hub.load('yukimasano/PASS:main', 'moco_resnet50')
-            # self.resnet.fc = nn.Linear(hidden_size, 365)
-            # checkpoint = torch.load(model_file, map_location=lambda storage, loc: storage)
-            # state_dict = {str.replace(k,'module.',''): v for k,v in checkpoint['state_dict'].items()}
-            # self.resnet.load_state_dict(state_dict)
         self.resnet.fc = nn.Linear(hidden_size, n_classes)
 
-
     def require_all_grads(self):
-        for name, param in self.resnet.named_parameters():
-            print(name)
+        for param in self.parameters():
             param.requires_grad = True
 
     def forward(self, x):
@@ -34,12 +25,14 @@ class ResNet50(nn.Module):
 
 class multilabel_classifier():
 
-    def __init__(self, device, dtype, model_file, nclasses=1, modelpath=None, hidden_size=2048, learning_rate=0.1, weight_decay=1e-4):
+    def __init__(self, trial, device, dtype, nclasses=1, modelpath=None, hidden_size=2048):
+        self.trial = trial
         self.nclasses = nclasses
         self.hidden_size = hidden_size
         self.device = device
         self.dtype = dtype
-
+        self.learning_rate = trial.suggest_float("learning_rate", 0.0001, 0.1)
+        self.weight_decay = trial.suggest_float("weight_decay", 0.0001, 0.1)
         self.model = ResNet50(n_classes=nclasses, hidden_size=hidden_size, pretrained=True)
         self.model.require_all_grads()
 
@@ -47,8 +40,7 @@ class multilabel_classifier():
         if torch.cuda.device_count() > 1:
             self.model = nn.DataParallel(self.model)
         self.model = self.model.to(device=self.device, dtype=self.dtype)
-        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=weight_decay)
-
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate, momentum=0.9, weight_decay=self.weight_decay)
         self.epoch = 1
         self.print_freq = 100
 
@@ -103,7 +95,6 @@ class multilabel_classifier():
             loss_list.append(loss.item())
             if self.print_freq and (i % self.print_freq == 0):
                 print('Training epoch {} [{}|{}] loss: {}'.format(self.epoch, i+1, len(loader), loss.item()), flush=True)
-
         self.epoch += 1
         return loss_list
 

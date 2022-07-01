@@ -2,6 +2,8 @@ import pickle, time, argparse, random
 from os import path, makedirs
 import numpy as np
 import torch
+import json
+
 from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import average_precision_score
 
@@ -29,9 +31,9 @@ def main():
     parser.add_argument('--device', default=torch.device('cuda:0'))
     parser.add_argument('--dtype', default=torch.float32)
     parser.add_argument('--res', type=int, default=224)
-
+    
     arg = vars(parser.parse_args())
-    arg['outdir'] = '{}/{}/lr_{}_wd_{}/'.format(arg['outdir'], str(arg['res']), str(arg['lr']), str(arg['wd']))
+    #json.dump(arg, open('{}/args.json'.format(arg['outdir']), 'w'))
     print('\n', arg, '\n')
     print('\nTraining with {} GPUs'.format(torch.cuda.device_count()))
 
@@ -56,13 +58,13 @@ def main():
 
     # Initialize classifier
     classifier = multilabel_classifier(arg['device'], arg['dtype'], nclasses=arg['nclasses'],
-                                       modelpath=arg['modelpath'], hidden_size=arg['hs'], learning_rate=arg['lr'])
+                                       modelpath=arg['modelpath'], hidden_size=arg['hs'], learning_rate=arg['lr'], model_file=arg['pretrainedpath'])
     classifier.epoch = 1 # Reset epoch for stage 2 training
     classifier.optimizer = torch.optim.SGD(classifier.model.parameters(), lr=arg['lr'], momentum=arg['momentum'], weight_decay=arg['wd'])
 
     # Keep track of loss and mAP/recall for best model selection
     loss_epoch_list = []; all_list = []
-
+    min_loss = 10000
     # Start training
     tb = SummaryWriter(log_dir='{}/runs'.format(arg['outdir']))
     start_time = time.time()
@@ -73,15 +75,18 @@ def main():
         train_loss_list = classifier.train(trainset)
         
         # Save the model
-        if (i + 1) % 5 == 0:
+        if (i + 1) % 10 == 0:
             classifier.save_model('{}/model_{}.pth'.format(arg['outdir'], i))
 
         # Do inference with the model
-        labels_list, scores_list, val_loss_list = classifier.test(valset)
+        labels_list, scores_list, val_loss_list, _ = classifier.test(valset)
         
         # Record train/val loss
         tb.add_scalar('Loss/Train', np.mean(train_loss_list), i)
         tb.add_scalar('Loss/Val', np.mean(val_loss_list), i)
+        #if np.mean(val_loss_list) <= min_loss:
+        #    min_loss = np.mean(val_loss_list)
+        #    classifier.save_model('{}/model_best.pth'.format(arg['outdir']))
         loss_epoch_list.append(np.mean(val_loss_list))
 
         # Calculate and record mAP
