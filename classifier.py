@@ -11,13 +11,21 @@ import torchvision.transforms as T
 
 
 class ResNet50(nn.Module):
-    def __init__(self, n_classes=1000, pretrained=True, hidden_size=2048):
+    def __init__(self, n_classes=1000, pretrained=True, hidden_size=2048, model_file='/n/fs/nmdz-gender/resnet50_places365.pth.tar'):
         super().__init__()
         self.resnet = torchvision.models.resnet50(pretrained=pretrained)
+        if not pretrained:  
+            self.resnet = torch.hub.load('yukimasano/PASS:main', 'moco_resnet50')
+            # self.resnet.fc = nn.Linear(hidden_size, 365)
+            # checkpoint = torch.load(model_file, map_location=lambda storage, loc: storage)
+            # state_dict = {str.replace(k,'module.',''): v for k,v in checkpoint['state_dict'].items()}
+            # self.resnet.load_state_dict(state_dict)
         self.resnet.fc = nn.Linear(hidden_size, n_classes)
 
+
     def require_all_grads(self):
-        for param in self.parameters():
+        for name, param in self.resnet.named_parameters():
+            print(name)
             param.requires_grad = True
 
     def forward(self, x):
@@ -26,7 +34,7 @@ class ResNet50(nn.Module):
 
 class multilabel_classifier():
 
-    def __init__(self, device, dtype, nclasses=1, modelpath=None, hidden_size=2048, learning_rate=0.1, weight_decay=1e-4):
+    def __init__(self, device, dtype, model_file, nclasses=1, modelpath=None, hidden_size=2048, learning_rate=0.1, weight_decay=1e-4):
         self.nclasses = nclasses
         self.hidden_size = hidden_size
         self.device = device
@@ -106,7 +114,7 @@ class multilabel_classifier():
         self.model.eval()
 
         with torch.no_grad():
-
+            files_list = []
             labels_list = np.array([], dtype=np.float32).reshape(0, self.nclasses)
             scores_list = np.array([], dtype=np.float32).reshape(0, self.nclasses)
             loss_list = []
@@ -129,5 +137,5 @@ class multilabel_classifier():
                 scores = torch.sigmoid(outputs).squeeze()
                 labels_list = np.concatenate((labels_list.squeeze(), labels.detach().cpu().numpy()), axis=0)
                 scores_list = np.concatenate((scores_list.squeeze(), scores.detach().cpu().numpy()), axis=0)
-
-        return labels_list, scores_list, loss_list
+                files_list.extend(ids)
+        return labels_list, scores_list, loss_list, files_list
