@@ -3,8 +3,8 @@ import re
 
 from pycocotools.coco import COCO
 
-directory = '/n/fs/visualai-scr/Data/Coco/2014data/'
-SPLIT = 'val'
+directory = 'directory_name'
+SPLIT = 'train'
 male_words = set(["male", "boy", "man", "gentleman", "boys", "men", "males", "gentlemen"])
 fem_words = set(["female", "girl","woman", "lady", "girls", "women", "females", "ladies"])
 num_cap = 2
@@ -30,9 +30,11 @@ for image in images:
         fem_overlap = is_overlap(sentence, fem_words)
         male_overlap = is_overlap(sentence, male_words)
         if fem_overlap: 
+            print(caption)
             is_fem = True 
             fem_count += 1
         if male_overlap: 
+            print(caption)
             is_mal = True 
             mal_count += 1
     if is_fem and is_mal: continue 
