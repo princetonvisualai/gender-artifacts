@@ -1,2 +1,68 @@
-# Gender Artifacts
-Gender biases are known to exist within large-scale visual datasets and can be reflected or even amplified in downstream models. Many prior works have proposed methods for mitigating gender biases, often by attempting to remove gender expression information from images. To understand the feasibility and practicality of these approaches, we investigate what <em>gender artifacts </em> exist within large-scale visual datasets. We define a <em>gender artifact </em> as a visual cue that is correlated with gender, focusing specifically on those cues that are learnable by a modern image classifier and have an interpretable human corollary. Through our analyses, we find that gender artifacts are ubiquitous in the COCO and OpenImages datasets, occurring everywhere from low-level information (e.g., the mean value of the color channels) to the higher-level composition of the image (e.g., pose and location of people). Given the prevalence of gender artifacts, we claim that attempts to remove gender artifacts from such datasets are largely infeasible. Instead, the responsibility lies with researchers and practitioners to be aware that the distribution of images within datasets is highly gendered and hence develop methods which are robust to these distributional shifts across groups.
+# Gender Artifacts in Visual Datasets
+### [Project Page](https://princetonvisualai.github.io/gender-artifacts/) | [Paper](https://arxiv.org/abs/2206.09191)
+
+This repo provides the code for the paper "Gender Artifacts in Visual Datasets."
+
+```
+  @article{meister2022artifacts,
+  author = {Nicole Meister and Dora Zhao and Angelina Wang and Vikram V. Ramaswamy and Ruth Fong and Olga Russakovsky},
+  title = {Gender Artifacts in Visual Datasetsi},
+  journal = {CoRR},
+  volume = {abs/2206.09191},
+  year={2022}
+  }
+```
+
+## Setup
+
+### Setup computing environment
+```
+conda create -n genderartifacts python=3.X.X. 
+conda activate genderartifacts 
+conda install --file requirements.txt
+```
+
+### Download data annotations
+Download the annotations from the following sources and place them in ```data/{dataset_name}```. 
+#### COCO
+```wget http://images.cocodataset.org/annotations/annotations_trainval2014.zip```
+
+#### OpenImages
+Follow the instructions from the [OpenImage website](https://storage.googleapis.com/openimages/web/extended.html) (copied below):
+
+1. Download the downloader (open and press Ctrl + S), or directly run:
+
+```wget https://raw.githubusercontent.com/openimages/dataset/master/downloader.py```
+
+2. Run the following script, where $IMAGE_LIST_FILE is one of the files with image key lists above:
+
+```python downloader.py $IMAGE_LIST_FILE --download_folder=$DOWNLOAD_FOLDER --num_processes=5```
+
+
+
+## Experiments
+### Resolution and Color
+TBD 
+
+### Person and Background
+To generate the image manipulations in the paper, use the following scripts:
+
+(* denotes available only for COCO)
+
+| Name      | Script         | 
+| ------------- |:-------------:| 
+| Full NoBg     | ```python image_manipulations.py --type full``` | 
+| MaskSegm*     | ```python image_manipulations.py --type segm --background```    |   
+| MaskRect      | ```python image_manipulations.py --type rect --background```     |   
+| MaskSegm NoBg*| ```python image_manipulations.py --type segm```             |
+| MaskRect NoBg | ```python image_manipulations.py --type rect```              |
+
+Note: make sure to specify the arguments --dataset $DATA --filepath $PATH --annotations $ANN --split $SPLIT as well. 
+
+To train and evaluate the gender cue model, run the following scripts 
+
+Train: ```bash train.sh X X ```
+
+Evaluate: ``` bash eval.sh X X ```
+
+### Contextual Objects
