@@ -45,7 +45,7 @@ Follow the instructions from the [OpenImage website](https://storage.googleapis.
 TBD 
 
 ### Person and Background
-To generate the image manipulations in the paper, use the following scripts:
+The files are located in ```src/person_scene```. To generate the image manipulations in the paper, use the following scripts:
 
 (* denotes available only for COCO)
 
