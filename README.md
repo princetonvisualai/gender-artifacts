@@ -61,8 +61,8 @@ Note: make sure to specify the arguments --dataset $DATA --filepath $PATH --anno
 
 To train and evaluate the gender cue model, run the following scripts 
 
-Train: ```bash train.sh X X ```
+Train: ```bash train.sh $TRAIN_LABEL_PATH $VAL_LABEL_PATH ```
 
-Evaluate: ``` bash eval.sh X X ```
+Evaluate: ``` bash eval.sh $MODEL_PATH $TEST_LABEL_PATH ```
 
 ### Contextual Objects
