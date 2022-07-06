@@ -17,7 +17,7 @@ This repo provides the code for the paper "Gender Artifacts in Visual Datasets."
 
 ### Setup computing environment
 ```
-conda create -n genderartifacts python=3.X.X. 
+conda create -n genderartifacts python=3.9
 conda activate genderartifacts 
 conda install --file requirements.txt
 ```
