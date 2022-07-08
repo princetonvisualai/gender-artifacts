@@ -1,4 +1,6 @@
 import argparse 
+import os 
+
 from oi_utils import *
 from coco_utils import *
 
@@ -17,6 +19,8 @@ def main():
     filepath = args['filepath']
     split = args['split']
     annotations = args['annotations']
+    if not os.path.exists(filepath.format(split, '')):
+        os.mkdir(filepath.format(split, ''))
 
     if args['dataset'] == 'coco':
         if args['background']:
@@ -25,7 +29,7 @@ def main():
             elif args['type'] == 'segm': coco_masksegm(filepath, annotations, split)
             else: print('Choose a type from rect or segm')
         else:
-            if args['full']: coco_full_nobg(filepath, annotations, split)
+            if args['type'] == 'full': coco_full_nobg(filepath, annotations, split)
             elif args['type'] == 'rect': coco_maskrect_nobg(filepath, annotations, split)
             elif args['type'] == 'segm': coco_masksegm_nobg(filepath, annotations, split)
             else: print('Choose a type from full or rect or segm')
@@ -42,3 +46,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
