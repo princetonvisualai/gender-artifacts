@@ -8,6 +8,7 @@ from tqdm import tqdm
 from PIL import Image, ImageDraw
 
 def oi_maskrect(filepath, annotations, split_name):
+    print("MaskRect")
     data = pickle.load(open('data/openimages/openimages_{}.pkl'.format(split_name), 'rb'))
     df = pd.read_csv(annotations)
 
@@ -24,6 +25,7 @@ def oi_maskrect(filepath, annotations, split_name):
     return 
 
 def oi_maskrect_nobg(filepath, annotations, split_name):
+    print("MaskRect NoBg")
     df = pd.read_csv(annotations)
     df = df[df['IsOccluded'] == 0]
     df = df[df['IsTruncated'] == 0]
