@@ -29,7 +29,7 @@ def get_avg_color(image):
 
 def coco_full_nobg(filepath, annotations, split_name):
     print("Full NoBg")
-    files = pickle.load(open('data/mals/{}.pkl'.format(split_name), 'rb'))
+    files = pickle.load(open('../../data/mals/{}.pkl'.format(split_name), 'rb'))
     coco = COCO(annotations)
 
     for filename in tqdm(files):
@@ -70,7 +70,7 @@ def coco_full_nobg(filepath, annotations, split_name):
 
 def coco_masksegm(filepath, annotations, split_name): 
     print("MaskSegm")
-    files = pickle.load(open('data/mals/{}.pkl'.format(split_name), 'rb'))
+    files = pickle.load(open('../../data/mals/{}.pkl'.format(split_name), 'rb'))
     coco = COCO(annotations)
 
     for filename in tqdm(files):
@@ -95,7 +95,7 @@ def coco_masksegm(filepath, annotations, split_name):
 
 def coco_maskrect(filepath, annotations, split_name):
     print("MaskRect")
-    files = pickle.load(open('data/mals/{}.pkl'.format(split_name), 'rb'))
+    files = pickle.load(open('../../data/mals/{}.pkl'.format(split_name), 'rb'))
     coco = COCO(annotations)
 
     for filename in tqdm(files):
@@ -117,7 +117,7 @@ def coco_maskrect(filepath, annotations, split_name):
 def coco_maskrect_nobg(filepath, annotations, split_name):
     print("MaskRect NoBg")
     coco = COCO(annotations)
-    files = pickle.load(open('data/mals/{}.pkl'.format(split_name), 'rb'))
+    files = pickle.load(open('../../data/mals/{}.pkl'.format(split_name), 'rb'))
 
     for filename in tqdm(files):
         image = cv2.imread(filename)
@@ -136,7 +136,7 @@ def coco_maskrect_nobg(filepath, annotations, split_name):
 
 def coco_masksegm_nobg(filepath, annotations, split_name):
     print("MaskSegm NoBg")
-    files = pickle.load(open('data/mals/{}.pkl'.format(split_name), 'rb'))
+    files = pickle.load(open('../../data/mals/{}.pkl'.format(split_name), 'rb'))
     coco = COCO(annotations)
 
     for filename in tqdm(files):

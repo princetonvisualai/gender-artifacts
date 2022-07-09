@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw
 
 def oi_maskrect(filepath, annotations, split_name):
     print("MaskRect")
-    data = pickle.load(open('data/openimages/openimages_{}.pkl'.format(split_name), 'rb'))
+    data = pickle.load(open('../../data/openimages/openimages_{}.pkl'.format(split_name), 'rb'))
     df = pd.read_csv(annotations)
 
     for i in tqdm(data):
